@@ -9,6 +9,7 @@ var app = express();
 // Importar ruta principal
 var rutaRaiz = require('./routes/raiz');
 var rutaUsuario = require('./routes/usuario');
+var rutaLogin = require('./routes/login');
 
 // Configuración Body parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,6 +29,7 @@ app.get('/', (req, res, next) => {
 
 // Rutas
 app.use('/usuario', rutaUsuario);
+app.use('/login', rutaLogin);
 
 // Escuchar peticiones
 app.listen(3000, () => {
