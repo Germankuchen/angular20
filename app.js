@@ -10,6 +10,8 @@ var app = express();
 var rutaRaiz = require('./routes/raiz');
 var rutaUsuario = require('./routes/usuario');
 var rutaLogin = require('./routes/login');
+var rutaHospital = require('./routes/hospital');
+var rutaMedico = require('./routes/medico');
 
 // Configuración Body parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,6 +32,8 @@ app.get('/', (req, res, next) => {
 // Rutas
 app.use('/usuario', rutaUsuario);
 app.use('/login', rutaLogin);
+app.use('/hospital', rutaHospital);
+app.use('/medico', rutaMedico);
 
 // Escuchar peticiones
 app.listen(3000, () => {
