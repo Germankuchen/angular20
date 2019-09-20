@@ -2,6 +2,7 @@
 var express = require('express');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
+var seed = require('../config/config');
 
 // Inicializar variables
 var app = express();
@@ -45,7 +46,7 @@ app.post('/', (req, res) => {
             return;
         }
         usuario.password = ':)';
-        var token = jwt.sign({ nombre: usuario.nombre, email: usuario.email }, '123456', { expiresIn: 14400 });
+        var token = jwt.sign({ nombre: usuario.nombre, email: usuario.email }, seed.SEED, { expiresIn: 14400 });
 
         res.status(200).json({
             mensaje: 'Se puede loguear',

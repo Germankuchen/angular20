@@ -5,6 +5,7 @@ var bcrypt = require('bcryptjs');
 // Inicializar variables
 var app = express();
 var Usuario = require('../models/usuarioModel');
+var autenticacion = require('../middlewares/autenticacion');
 
 
 /*****************************************
@@ -23,7 +24,7 @@ app.get('/', (req, res, next) => {
 /*****************************************
  ************** Crea un usuario ***********
  ******************************************/
-app.post('/', (req, res) => {
+app.post('/', autenticacion.vericarToken, (req, res) => {
     var body = req.body;
     if (body.password == null) {
         res.status(400).json({
@@ -48,14 +49,17 @@ app.post('/', (req, res) => {
             });
             return;
         }
-        res.status(201).json(usuarioGuardado);
+        res.status(201).json({
+            usuario: usuarioGuardado,
+            usuarioToken: req.usuario
+        });
     });
 });
 
 /*****************************************
  ********** Actualiza un usuario *********
  *****************************************/
-app.put('/:id', (req, res) => {
+app.put('/:id', autenticacion.vericarToken, (req, res) => {
 
     var id = req.params.id;
     var body = req.body;
@@ -95,7 +99,7 @@ app.put('/:id', (req, res) => {
 /*****************************************
  ********** Elimina un usuario ***********
  *****************************************/
-app.delete('/:id', (req, res) => {
+app.delete('/:id', autenticacion.vericarToken, (req, res) => {
 
     var id = req.params.id;
 
