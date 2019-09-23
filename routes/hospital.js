@@ -12,7 +12,7 @@ var autenticacion = require('../middlewares/autenticacion');
  ****** Obtiene todos los hospitales *****
  *****************************************/
 app.get('/', (req, res, next) => {
-    Hospital.find({}, 'nombre img usuario', (error, Hospitales) => {
+    Hospital.find({}).exec((error, Hospitales) => {
         if (error) {
             res.status(500).json({ mensaje: 'Se jodio la BD' });
             return;

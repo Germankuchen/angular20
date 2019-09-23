@@ -12,7 +12,7 @@ var autenticacion = require('../middlewares/autenticacion');
  ****** Obtiene todos los medicos *****
  *****************************************/
 app.get('/', (req, res, next) => {
-    Medico.find({}, 'nombre img usuario hospital', (error, medicos) => {
+    Medico.find({}).exec((error, medicos) => {
         if (error) {
             res.status(500).json({ mensaje: 'Se jodio la BD' });
             return;
@@ -54,65 +54,65 @@ app.post('/', autenticacion.vericarToken, (req, res) => {
 });
 
 /*****************************************
- ********** Actualiza un hospital *********
+ ********** Actualiza un medico *********
  *****************************************/
 app.put('/:id', autenticacion.vericarToken, (req, res) => {
 
     var id = req.params.id;
     var body = req.body;
 
-    Hospital.findById(id, (error, hospital) => {
+    Medico.findById(id, (error, medico) => {
         if (error) {
             res.status(500).json({
-                mensaje: 'Problema al buscar el hospital',
+                mensaje: 'Problema al buscar el medico',
                 error: error
             });
             return;
         }
-        if (!hospital) {
+        if (!medico) {
             res.status(400).json({
-                mensaje: 'No se encontró el hospital a modificar'
+                mensaje: 'No se encontró el medico a modificar'
             });
             return;
         }
 
-        hospital.nombre = body.nombre;
+        medico.nombre = body.nombre;
 
-        hospital.save((error, hospitalGuardado) => {
+        medico.save((error, medicoGuardado) => {
             if (error) {
                 res.status(400).json({
-                    mensaje: 'Error al modificar el hospital',
+                    mensaje: 'Error al modificar el medico',
                     error: error
                 });
                 return;
             }
-            res.status(200).json(hospitalGuardado);
+            res.status(200).json(medicoGuardado);
         });
     });
 });
 
 /*****************************************
- ********** Elimina un usuario ***********
+ ********** Elimina un medico ***********
  *****************************************/
 app.delete('/:id', autenticacion.vericarToken, (req, res) => {
 
     var id = req.params.id;
 
-    Hospital.findByIdAndRemove(id, (error, hospitalEliminado) => {
+    Medico.findByIdAndRemove(id, (error, medicoEliminado) => {
         if (error) {
             res.status(500).json({
-                mensaje: 'Problema al buscar y eliminar el hospital',
+                mensaje: 'Problema al buscar y eliminar el medico',
                 error: error
             });
             return;
         }
-        if (!hospitalEliminado) {
+        if (!medicoEliminado) {
             res.status(400).json({
-                mensaje: 'No existe un hospital con ese ID'
+                mensaje: 'No existe un medico con ese ID'
             });
             return;
         }
-        res.status(200).json({ mensaje: 'Se quitó el hospital correctamente' });
+        res.status(200).json({ mensaje: 'Se quitó el medico correctamente' });
     });
 });
 
