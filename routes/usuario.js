@@ -12,12 +12,28 @@ var autenticacion = require('../middlewares/autenticacion');
  ******** Obtiene todos los usuario *******
  ******************************************/
 app.get('/', (req, res, next) => {
-    Usuario.find({}, 'nombre email img role', (error, Usuarios) => {
+    var offset = req.query.desde;
+    if (offset === null) {
+        offset = 0;
+    }
+    offset = Number(offset);
+
+    Usuario.find({}, 'nombre email img role').skip(offset).limit(5).exec((error, losUsuarios) => {
         if (error) {
             res.status(500).json({ mensaje: 'Se jodio la BD' });
             return;
         }
-        res.status(200).json(Usuarios);
+        Usuario.count({}, (error, total) => {
+            if (error) {
+                res.status(500).json({ mensaje: 'Error al obtener el total de usuarios' });
+                return;
+            }
+            res.status(200).json({
+                usuarios: losUsuarios,
+                cantRegistros: total
+            });
+        });
+
     });
 });
 

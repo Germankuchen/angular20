@@ -12,12 +12,24 @@ var autenticacion = require('../middlewares/autenticacion');
  ****** Obtiene todos los medicos *****
  *****************************************/
 app.get('/', (req, res, next) => {
-    Medico.find({}).exec((error, medicos) => {
+    var offset = req.query.desde;
+    if (offset === null) {
+        offset = 0;
+    }
+    offset = Number(offset);
+
+    Medico.find({}).skip(offset).limit(5).exec((error, medicos) => {
         if (error) {
             res.status(500).json({ mensaje: 'Se jodio la BD' });
             return;
         }
-        res.status(200).json(medicos);
+        Medico.count({}, (error, total) => {
+            if (error) {
+                res.status(500).json({ mensaje: 'Error al obtener el total de medicos' });
+                return;
+            }
+            res.status(200).json({ medicos: medicos, total: total });
+        });
     });
 });
 
