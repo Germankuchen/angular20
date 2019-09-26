@@ -31,11 +31,12 @@ app.get('/', (req, res, next) => {
 });
 
 // Rutas
+app.use('/busqueda', rutaBusqueda);
 app.use('/usuario', rutaUsuario);
 app.use('/login', rutaLogin);
 app.use('/hospital', rutaHospital);
 app.use('/medico', rutaMedico);
-//pp.use('/busqueda', rutaBusqueda);
+
 
 // Escuchar peticiones
 app.listen(3000, () => {
