@@ -13,6 +13,7 @@ var rutaLogin = require('./routes/login');
 var rutaHospital = require('./routes/hospital');
 var rutaMedico = require('./routes/medico');
 var rutaBusqueda = require('./routes/busqueda');
+var rutaUpload = require('./routes/upload');
 
 // Configuración Body parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,6 +37,7 @@ app.use('/usuario', rutaUsuario);
 app.use('/login', rutaLogin);
 app.use('/hospital', rutaHospital);
 app.use('/medico', rutaMedico);
+app.use('/upload', rutaUpload);
 
 
 // Escuchar peticiones
