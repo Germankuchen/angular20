@@ -14,6 +14,7 @@ var rutaHospital = require('./routes/hospital');
 var rutaMedico = require('./routes/medico');
 var rutaBusqueda = require('./routes/busqueda');
 var rutaUpload = require('./routes/upload');
+var rutaImagen = require('./routes/imagen');
 
 // Configuración Body parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,6 +32,11 @@ app.get('/', (req, res, next) => {
     res.status(200).json({ mensaje: 'OK' });
 });
 
+// Agrega la funcionalidad de servidor de archivo para luego poder acceder a localhost:3000/uploads
+var serveIndex = require('serve-index');
+app.use(express.static(__dirname + '/'))
+app.use('/uploads', serveIndex(__dirname + '/uploads'));
+
 // Rutas
 app.use('/busqueda', rutaBusqueda);
 app.use('/usuario', rutaUsuario);
@@ -38,6 +44,7 @@ app.use('/login', rutaLogin);
 app.use('/hospital', rutaHospital);
 app.use('/medico', rutaMedico);
 app.use('/upload', rutaUpload);
+app.use('/imagen', rutaImagen);
 
 
 // Escuchar peticiones
