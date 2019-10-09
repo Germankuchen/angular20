@@ -8,6 +8,18 @@ var seed = require('../config/config');
 var app = express();
 var Usuario = require('../models/usuarioModel');
 
+// Necesario login google
+const { OAuth2Client } = require('google-auth-library');
+const CLIENT_ID = require('../config/confing').CLIENT_ID;
+const client = new OAuth2Client(CLIENT_ID);
+
+
+app.post('/google/', (req, res) => {
+    res.status(200).json({
+        mensaje: 'Intentando loguearse con google'
+    });
+});
+
 app.post('/', (req, res) => {
 
     var body = req.body;
