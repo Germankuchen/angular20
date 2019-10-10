@@ -10,14 +10,44 @@ var Usuario = require('../models/usuarioModel');
 
 // Necesario login google
 const { OAuth2Client } = require('google-auth-library');
-const CLIENT_ID = require('../config/confing').CLIENT_ID;
+const CLIENT_ID = require('../config/config').CLIENT_ID;
 const client = new OAuth2Client(CLIENT_ID);
 
-
-app.post('/google/', (req, res) => {
-    res.status(200).json({
-        mensaje: 'Intentando loguearse con google'
+async function verify(token) {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
+    const payload = ticket.getPayload();
+    return {
+        'nombre': payload.name,
+        'email': payload.email,
+        'img': payload.picture,
+        'google': true
+    };
+}
+
+
+app.post('/google/', async(req, res) => {
+
+    var token = req.body.token;
+    await verify(token).then(info => {
+        return res.status(200).json({
+            mensaje: 'Token válido',
+            info: info
+        });
+    }).catch(e => {
+        return res.status(403).json({
+            mensaje: 'Token no válido',
+            token: token,
+            idCliente: CLIENT_ID,
+            error: e
+        });
+    });
+
+
 });
 
 app.post('/', (req, res) => {
