@@ -33,12 +33,7 @@ async function verify(token) {
 app.post('/google/', async(req, res) => {
 
     var token = req.body.token;
-    await verify(token).then(info => {
-        return res.status(200).json({
-            mensaje: 'Token válido',
-            info: info
-        });
-    }).catch(e => {
+    var verificar = await verify(token).catch(e => {
         return res.status(403).json({
             mensaje: 'Token no válido',
             token: token,
@@ -46,7 +41,9 @@ app.post('/google/', async(req, res) => {
             error: e
         });
     });
+    Usuario.findOne({ 'email': verificar.usuario }, (error, usuarioBD) => {
 
+    });
 
 });
 
