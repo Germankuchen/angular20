@@ -40,7 +40,7 @@ app.get('/', (req, res, next) => {
 /*****************************************
  ************** Crea un usuario ***********
  ******************************************/
-app.post('/', autenticacion.vericarToken, (req, res) => {
+app.post('/', /*autenticacion.vericarToken,*/ (req, res) => {
     var body = req.body;
     if (body.password == null) {
         res.status(400).json({
