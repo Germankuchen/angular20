@@ -77,8 +77,11 @@ app.post('/', /*autenticacion.vericarToken,*/ (req, res) => {
  *****************************************/
 app.put('/:id', autenticacion.vericarToken, (req, res) => {
 
+    console.log('llego aca');
     var id = req.params.id;
     var body = req.body;
+
+    console.log(body);
 
     Usuario.findById(id, (error, usuario) => {
         if (error) {
